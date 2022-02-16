@@ -4,6 +4,6 @@ import Solitaire from './Solitaire';
 
 test('renders learn react link', () => {
   render(<Solitaire />);
-  const linkElement = screen.getByText(/learn react/i);
+  const linkElement = screen.getByText(/Deal../i);
   expect(linkElement).toBeInTheDocument();
 });
