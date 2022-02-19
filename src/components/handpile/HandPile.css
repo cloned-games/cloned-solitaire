@@ -1,0 +1,7 @@
+.card-slot {
+  display: block;
+  position: relative;
+  height: 186px;
+  width: 120px;
+  margin-left: 12px;
+}

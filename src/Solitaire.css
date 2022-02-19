@@ -29,50 +29,8 @@ body {
   justify-content: space-between;
 }
 
-.top-row .deal-pile {
-  display: flex;
-}
-
-.top-row .deal-pile .open-pile {
-  display: block;
-  position: relative;
-  margin-left: 12px;
-  margin-right: 32px;
-  height: 186px;
-  width: 120px;
-}
-
-.top-row .home-pile {
-  display: flex;
-  justify-content: space-between;
-  position: relative;
-}
-
 .bottom-row {
   display: flex;
   justify-content: space-between;
   margin-bottom: 24px;
-}
-
-.card-slot {
-  display: block;
-  position: relative;
-  height: 186px;
-  width: 120px;
-  margin-left: 12px;
-}
-
-.card-border {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  border: 1px solid #000;
-  border-radius: 10px;
-  height: 97%;
-  width: 97%;
-}
-
-.card {
-  position: relative;
-  height: auto;
 }

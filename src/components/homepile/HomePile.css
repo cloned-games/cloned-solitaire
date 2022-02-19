@@ -1,0 +1,28 @@
+.home-pile {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+}
+
+.home-pile .card-slot {
+  display: block;
+  position: relative;
+  height: 186px;
+  width: 120px;
+  margin-left: 12px;
+}
+
+.home-pile .card-border {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  border: 1px solid #000;
+  border-radius: 10px;
+  height: 97%;
+  width: 97%;
+}
+
+.home-pile .home-slot {
+  position: relative;
+  height: auto;
+}

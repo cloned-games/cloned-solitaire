@@ -1,0 +1,8 @@
+.open-pile {
+  display: block;
+  position: relative;
+  margin-left: 12px;
+  margin-right: 32px;
+  height: 186px;
+  width: 120px;
+}

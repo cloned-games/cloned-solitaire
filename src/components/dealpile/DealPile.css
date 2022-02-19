@@ -1,0 +1,12 @@
+.deal-pile {
+  position: relative;
+  display: flex;
+}
+
+.deal-pile .card-slot {
+  display: block;
+  position: absolute;
+  height: 186px;
+  width: 120px;
+  opacity: 0.6;
+}

@@ -1,8 +1,72 @@
-import React from 'react';
+import { React, useState } from 'react';
+import DealPile from './components/dealpile/DealPile';
+import HandPile from './components/handpile/HandPile';
+import HomePile from './components/homepile/HomePile';
+import OpenPile from './components/openpile/OpenPile';
 import logo from './logo.svg';
 import './Solitaire.css';
 
+const suitNames = ['_club', '_diamond', '_heart', '_spade'];
+const denominations = Array.from({ length: 13 }, (_, index) => index + 1);
+const suits = suitNames.map((suit) => denominations.map((id) => id.toString().concat(suit))).sort();
+// console.log(suits);
+const deck = suits.reduce((card, suit) => card.concat(suit), []);
+// console.log(deck);
+
+function shuffleDeck(cards) {
+  const deckArray = cards;
+  for (let index = deckArray.length - 1; index > 0; index -= 1) {
+    const randomIndex = Math.floor(Math.random() * (index + 1));
+    const temp = deckArray[index];
+    deckArray[index] = deckArray[randomIndex];
+    deckArray[randomIndex] = temp;
+  }
+  return deckArray;
+}
+
+function distributeDeck(cards) {
+  let handIndex = 1;
+  const obj = [];
+  for (let index = 0; index < cards.length; index += 1) {
+    const suit = cards[index].split('_')[1];
+    const num = cards[index].split('_')[0];
+    if (index === 7) {
+      handIndex = 2;
+    } else if (index === 13) {
+      handIndex = 3;
+    } else if (index === 18) {
+      handIndex = 4;
+    } else if (index === 22) {
+      handIndex = 5;
+    } else if (index === 25) {
+      handIndex = 6;
+    } else if (index === 27) {
+      handIndex = 7;
+    }
+    if (index >= 0 && index < 7) {
+      obj.push({ suit, num, slot: 'pile_' + handIndex });
+    } else if (index >= 7 && index < 13) {
+      obj.push({ suit, num, slot: 'pile_' + handIndex });
+    } else if (index >= 13 && index < 18) {
+      obj.push({ suit, num, slot: 'pile_' + handIndex });
+    } else if (index >= 18 && index < 22) {
+      obj.push({ suit, num, slot: 'pile_' + handIndex });
+    } else if (index >= 22 && index < 25) {
+      obj.push({ suit, num, slot: 'pile_' + handIndex });
+    } else if (index >= 25 && index < 28) {
+      obj.push({ suit, num, slot: 'pile_' + handIndex });
+    } else {
+      obj.push({ suit, num, slot: 'pile_deck' });
+    }
+    handIndex += 1;
+  }
+  return obj;
+}
+
 function Solitaire() {
+  // const [gameDeck, setGameDeck] = useState([]);
+  const shuffled = shuffleDeck(deck);
+  const gameDeck = distributeDeck(shuffled);
   return (
     <div className="app-container">
       <header style={{ backgroundColor: '#d3d3d3' }}>
@@ -10,293 +74,20 @@ function Solitaire() {
       </header>
       <div className="game-container">
         <div className="top-row">
-          <div className="deal-pile">
-            <div className="card-slot" style={{ display: 'flex', justifyContent: 'center', alignContent: 'center' }}>
-              <img
-                alt="cartman"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/cartman.svg"
-                width="150px"
-              />
-            </div>
-            <div className="open-pile" />
-          </div>
-          <div className="home-pile">
-            <div className="card-slot">
-              <div className="card-border">
-                <img
-                  alt="heart"
-                  className="card"
-                  src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/heart.svg"
-                  width="30px"
-                />
-              </div>
-            </div>
-            <div className="card-slot">
-              <div className="card-border">
-                <img
-                  alt="club"
-                  className="card"
-                  src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Spades.svg"
-                  width="30px"
-                />
-              </div>
-            </div>
-            <div className="card-slot">
-              <div className="card-border">
-                <img
-                  alt="diamond"
-                  className="card"
-                  src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/heart.svg"
-                  width="30px"
-                />
-              </div>
-            </div>
-            <div className="card-slot">
-              <div className="card-border">
-                <img
-                  alt="spade"
-                  className="card"
-                  src="https://upload.wikimedia.org/wikipedia/commons/e/e7/Spades.svg"
-                  width="30px"
-                />
-              </div>
-            </div>
-          </div>
+          <DealPile
+            deck={gameDeck}
+          />
+          <OpenPile
+            deck={gameDeck}
+          />
+          <HomePile
+            deck={gameDeck}
+          />
         </div>
-        {/* bottom row */}
         <div className="bottom-row">
-          <div className="card-slot">
-            <div className="card-border">
-              <img
-                alt="first slot"
-                className="card"
-                draggable="true"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ top: '0px' }}
-                width="120px"
-              />
-            </div>
-          </div>
-          <div className="card-slot">
-            <div className="card-border">
-              <img
-                alt="second slot face down"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '0px' }}
-                width="120px"
-              />
-              <img
-                alt="second slot face up"
-                className="card"
-                draggable="true"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/sync.svg"
-                style={{ position: 'absolute', top: '5px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-            </div>
-          </div>
-          <div className="card-slot">
-            <div className="card-border">
-              <img
-                alt="third slot face down 1"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '0px' }}
-                width="120px"
-              />
-              <img
-                alt="third slot face down 2"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '5px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="third slot face up"
-                className="card"
-                draggable="true"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/sync.svg"
-                style={{ position: 'absolute', top: '10px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-            </div>
-          </div>
-          <div className="card-slot">
-            <div className="card-border">
-              <img
-                alt="fourth slot face down 1"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '0px' }}
-                width="120px"
-              />
-              <img
-                alt="fourth slot face down 2"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '5px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="fourth slot face down 3"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '10px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="fourth slot face up"
-                className="card"
-                draggable="true"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/sync.svg"
-                style={{ position: 'absolute', top: '15px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-            </div>
-          </div>
-          <div className="card-slot">
-            <div className="card-border">
-              <img
-                alt="fifth slot face down 1"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '0px' }}
-                width="120px"
-              />
-              <img
-                alt="fifth slot face down 2"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '5px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="fifth slot face down 3"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '10px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="fifth slot face down 4"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '15px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="fifth slot face up"
-                className="card"
-                draggable="true"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/sync.svg"
-                style={{ position: 'absolute', top: '20px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-            </div>
-          </div>
-          <div className="card-slot">
-            <div className="card-border">
-              <img
-                alt="sixth slot face down 1"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '0px' }}
-                width="120px"
-              />
-              <img
-                alt="sixth slot face down 2"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '5px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="sixth slot face down 3"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '10px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="sixth slot face down 4"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '15px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="sixth slot face down 5"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '20px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="sixth slot face up"
-                className="card"
-                draggable="true"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/sync.svg"
-                style={{ position: 'absolute', top: '25px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-            </div>
-          </div>
-          <div className="card-slot">
-            <div className="card-border">
-              <img
-                alt="seventh slot face down 1"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '0px' }}
-                width="120px"
-              />
-              <img
-                alt="seventh slot face down 2"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '5px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="seventh slot face down 3"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '10px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="seventh slot face down 4"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '15px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="seventh slot face down 5"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '20px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="seventh slot face down 6"
-                className="card"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/feedsync.svg"
-                style={{ position: 'absolute', top: '25px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-              <img
-                alt="seventh slot face up"
-                className="card"
-                draggable="true"
-                src="https://dev.w3.org/SVG/tools/svgweb/samples/svg-files/sync.svg"
-                style={{ position: 'absolute', top: '30px', borderTop: '1px solid black' }}
-                width="120px"
-              />
-            </div>
-          </div>
+          <HandPile
+            deck={gameDeck}
+          />
         </div>
       </div>
     </div>
