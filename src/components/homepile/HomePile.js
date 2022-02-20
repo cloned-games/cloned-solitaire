@@ -16,6 +16,7 @@ export default function HomePile() {
               className="home-slot"
               src={index % 2 ? Hearts : Spades}
               width="30px"
+              draggable="false"
             />
           </div>
         </div>

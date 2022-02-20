@@ -1,4 +1,6 @@
 import { React, useState } from 'react';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import DealPile from './components/dealpile/DealPile';
 import HandPile from './components/handpile/HandPile';
 import HomePile from './components/homepile/HomePile';
@@ -44,19 +46,19 @@ function distributeDeck(cards) {
       handIndex = 7;
     }
     if (index >= 0 && index < 7) {
-      obj.push({ suit, num, slot: 'pile_' + handIndex });
+      obj.push({ id: num + '_' + suit, suit, num, slot: 'pile_' + handIndex });
     } else if (index >= 7 && index < 13) {
-      obj.push({ suit, num, slot: 'pile_' + handIndex });
+      obj.push({ id: num + '_' + suit, suit, num, slot: 'pile_' + handIndex });
     } else if (index >= 13 && index < 18) {
-      obj.push({ suit, num, slot: 'pile_' + handIndex });
+      obj.push({ id: num + '_' + suit, suit, num, slot: 'pile_' + handIndex });
     } else if (index >= 18 && index < 22) {
-      obj.push({ suit, num, slot: 'pile_' + handIndex });
+      obj.push({ id: num + '_' + suit, suit, num, slot: 'pile_' + handIndex });
     } else if (index >= 22 && index < 25) {
-      obj.push({ suit, num, slot: 'pile_' + handIndex });
+      obj.push({ id: num + '_' + suit, suit, num, slot: 'pile_' + handIndex });
     } else if (index >= 25 && index < 28) {
-      obj.push({ suit, num, slot: 'pile_' + handIndex });
+      obj.push({ id: num + '_' + suit, suit, num, slot: 'pile_' + handIndex });
     } else {
-      obj.push({ suit, num, slot: 'pile_deck' });
+      obj.push({ id: num + '_' + suit, suit, num, slot: 'pile_deck' });
     }
     handIndex += 1;
   }
@@ -68,29 +70,31 @@ function Solitaire() {
   const shuffled = shuffleDeck(deck);
   const gameDeck = distributeDeck(shuffled);
   return (
-    <div className="app-container">
-      <header style={{ backgroundColor: '#d3d3d3' }}>
-        Deal.. Deck.. Options.. Undo Score:0 Time:0
-      </header>
-      <div className="game-container">
-        <div className="top-row">
-          <DealPile
-            deck={gameDeck}
-          />
-          <OpenPile
-            deck={gameDeck}
-          />
-          <HomePile
-            deck={gameDeck}
-          />
-        </div>
-        <div className="bottom-row">
-          <HandPile
-            deck={gameDeck}
-          />
+    <DndProvider backend={HTML5Backend}>
+      <div className="app-container">
+        <header style={{ backgroundColor: '#d3d3d3' }}>
+          Deal.. Deck.. Options.. Undo Score:0 Time:0
+        </header>
+        <div className="game-container">
+          <div className="top-row">
+            <DealPile
+              deck={gameDeck}
+            />
+            <OpenPile
+              deck={gameDeck}
+            />
+            <HomePile
+              deck={gameDeck}
+            />
+          </div>
+          <div className="bottom-row">
+            <HandPile
+              deck={gameDeck}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </DndProvider>
   );
 }
 

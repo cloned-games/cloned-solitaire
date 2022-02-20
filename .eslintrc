@@ -30,6 +30,11 @@
     "react"
   ],
   "rules": {
+    "react/no-this-in-sfc": 0,
+    "react/prop-types": 0,
+    "no-shadow": "off",
+    "react/jsx-props-no-spreading": 0,
+    "react/jsx-no-bind": 0,
     "no-nested-ternary": "off",
     "no-template-curly-in-string": "off",
     "no-unused-vars": 0,
@@ -38,6 +43,7 @@
     "prefer-template": "off",
     "react/no-array-index-key": 0,
     "linebreak-style": 0,
+    "object-curly-newline": 0,
     "react/jsx-filename-extension": [
       1,
       {

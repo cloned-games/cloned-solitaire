@@ -1,19 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useDrag } from 'react-dnd';
 import CardBack from '../../assets/CardBack.svg';
 import OneDiamond from '../../assets/1D.svg';
 import './Card.css';
 
 export default function Card({
-  altText, direction, draggable, styleProps, value, width,
+  altText, direction, id, rowNum, value, width,
 }) {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: 'card',
+    item: { id },
+    collect: (monitor) => ({
+      item: monitor.getItem(),
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
   return (
     <img
-      id={value.num + '_' + value.suit}
+      id={id}
+      ref={drag}
       alt={altText}
       className="card"
-      draggable={draggable}
-      style={styleProps}
+      style={{
+        position: 'absolute',
+        top: 15 * rowNum + 'px',
+        border: isDragging ? '5px solid pink' : '0px',
+        cursor: direction === 'up' ? 'grab' : 'auto',
+      }}
       src={direction === 'down' ? CardBack : OneDiamond}
       width={width}
     />
@@ -23,8 +37,9 @@ export default function Card({
 Card.defaultProps = {
   altText: 'image element',
   direction: 'down',
-  draggable: 'false',
-  styleProps: {},
+  id: '',
+  // draggable: 'false',
+  rowNum: 0,
   value: {},
   width: '100%',
 };
@@ -32,8 +47,9 @@ Card.defaultProps = {
 Card.propTypes = {
   altText: PropTypes.string,
   direction: PropTypes.string,
-  draggable: PropTypes.string,
-  styleProps: PropTypes.instanceOf(Object),
+  id: PropTypes.string,
+  // draggable: PropTypes.string,
+  rowNum: PropTypes.number,
   value: PropTypes.instanceOf(Object),
   width: PropTypes.string,
 };
