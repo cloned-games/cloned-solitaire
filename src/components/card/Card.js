@@ -9,11 +9,10 @@ export default function Card({
   altText, direction, id, rowNum, value, width,
 }) {
   const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'card',
-    item: { id },
+    type: 'CARD',
+    item: value,
     collect: (monitor) => ({
-      item: monitor.getItem(),
-      isDragging: !!monitor.isDragging(),
+      isDragging: monitor.isDragging(),
     }),
   }));
   return (
@@ -23,9 +22,9 @@ export default function Card({
       alt={altText}
       className="card"
       style={{
+        opacity: isDragging ? 0.5 : 1,
         position: 'absolute',
         top: 15 * rowNum + 'px',
-        border: isDragging ? '5px solid pink' : '0px',
         cursor: direction === 'up' ? 'grab' : 'auto',
       }}
       src={direction === 'down' ? CardBack : OneDiamond}

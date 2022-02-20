@@ -1,4 +1,4 @@
-import { React, useState } from 'react';
+import { React, useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import DealPile from './components/dealpile/DealPile';
@@ -69,6 +69,7 @@ function Solitaire() {
   // const [gameDeck, setGameDeck] = useState([]);
   const shuffled = shuffleDeck(deck);
   const gameDeck = distributeDeck(shuffled);
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="app-container">
